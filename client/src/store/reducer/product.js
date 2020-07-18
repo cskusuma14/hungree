@@ -19,11 +19,14 @@ export default (state = initialState, action) => {
       console.log(action.payload);
       return {
         ...state,
-        products: state.products.splice(
-          state.products.findIndex((x) => x.id == action.payload.id),
-          1,
-          action.payload
-        ),
+        products: [
+          ...state.products,
+          state.products.splice(
+            state.products.findIndex((x) => x.id == action.payload.id),
+            1,
+            action.payload
+          ),
+        ],
       };
     }
     case "DELETE_PRODUCTS": {
