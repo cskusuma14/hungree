@@ -22,6 +22,18 @@ class Products {
     });
   }
 
+  static getProductById(req, res) {
+    let productId = req.params.id;
+    Product.findByPk(productId)
+      .then((data) => {
+        if (data) res.status(200).json(data);
+        else res.status(404).json({ message: "data not found" });
+      })
+      .catch((err) => {
+        res.status(500).json({ err });
+      });
+  }
+
   static create(req, res) {
     Product.create({
       name: req.body.name,

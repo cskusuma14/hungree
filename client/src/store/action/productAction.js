@@ -42,6 +42,44 @@ export function addDataProduct(dataProduct) {
   };
 }
 
+export function getProductById(idProduct) {
+  return (dispatch, setState) => {
+    axios({
+      url: `${apiURL}/products/${idProduct}`,
+      method: "GET",
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+    })
+      .then((res) => {
+        dispatch({ type: "GET_PRODUCTBYID", payload: res.data });
+      })
+      .then((err) => {
+        console.log(err);
+      });
+  };
+}
+
+export function editProduct(idProduct, dataProduct) {
+  console.log(dataProduct);
+  return (dispatch, setState) => {
+    axios({
+      url: `${apiURL}/products/${idProduct}`,
+      method: "PUT",
+      headers: {
+        token: localStorage.getItem("token"),
+      },
+      data: dataProduct,
+    })
+      .then((res) => {
+        dispatch({ type: "EDIT_PRODUCTS", payload: res.data });
+      })
+      .then((err) => {
+        console.log(err);
+      });
+  };
+}
+
 export function deleteProduct(idProduct) {
   return (dispatch, setState) => {
     axios({

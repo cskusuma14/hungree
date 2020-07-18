@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Form, Button } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { getProducts } from "../store/action/productAction";
+import { getProductById, editProduct } from "../store/action/productAction";
 import swal from "sweetalert";
 import { useParams } from "react-router-dom";
 
@@ -18,23 +18,30 @@ export default () => {
   const history = useHistory();
 
   let { id } = useParams();
-  const { products } = useSelector((state) => state.productsReducer);
+  const { product } = useSelector((state) => state.productsReducer);
 
   useEffect(() => {
-    dispatch(getProducts());
+    dispatch(getProductById(id));
   }, [dispatch]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    let data = {
-      name,
-      price,
-      stock,
-      description,
-      category,
-      image_url,
-    };
-    swal("Good Job!", "Success edit product", "success");
+    let data = {};
+    name == "" ? (data.name = product.name) : (data.name = name);
+    price == "" ? (data.price = product.price) : (data.price = price);
+    stock == "" ? (data.stock = product.stock) : (data.stock = stock);
+    description == ""
+      ? (data.description = product.description)
+      : (data.description = description);
+    category == ""
+      ? (data.category = product.category)
+      : (data.category = category);
+    image_url == ""
+      ? (data.image_url = product.image_url)
+      : (data.image_url = image_url);
+
+    // console.log(data);
+    dispatch(editProduct(id, data));
     history.push("/");
   };
 
@@ -45,7 +52,7 @@ export default () => {
           <Form.Label>Product Name </Form.Label>
           <Form.Control
             type="text"
-            value={name}
+            defaultValue={product.name}
             onChange={(e) => setName(e.target.value)}
             placeholder="Enter Product Name"
             required
@@ -54,7 +61,7 @@ export default () => {
             <Form.Label>Price </Form.Label>
             <Form.Control
               type="number"
-              value={price}
+              defaultValue={product.price}
               onChange={(e) => setPrice(e.target.value)}
               placeholder="Enter Product Price"
               required
@@ -64,7 +71,7 @@ export default () => {
             <Form.Label>Stock </Form.Label>
             <Form.Control
               type="number"
-              value={stock}
+              defaultValue={product.stock}
               onChange={(e) => setStock(e.target.value)}
               placeholder="Enter Product Stock"
               required
@@ -74,7 +81,7 @@ export default () => {
             <Form.Label> Category </Form.Label>
             <Form.Control
               type="text"
-              value={category}
+              defaultValue={product.category}
               onChange={(e) => setCategory(e.target.value)}
               placeholder="Enter Product Category"
               required
@@ -84,7 +91,7 @@ export default () => {
             <Form.Label> Description </Form.Label>
             <Form.Control
               type="text"
-              value={description}
+              defaultValue={product.description}
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter Product Description"
               required
@@ -94,7 +101,7 @@ export default () => {
             <Form.Label>Image URL </Form.Label>
             <Form.Control
               type="text"
-              value={image_url}
+              defaultValue={product.image_url}
               onChange={(e) => setImageUrl(e.target.value)}
               placeholder="Enter Product Image url"
               required
