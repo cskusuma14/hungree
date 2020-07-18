@@ -9,7 +9,7 @@ const authentication = (req, res, next) => {
       res.status(400).json({ message: "Token not found" });
     } else {
       const decode = jwt.verify(token, process.env.JWT_SECRET);
-      console.log(decode);
+      //console.log(decode);
       req.userId = decode.userId;
       req.username = decode.username;
       req.email = decode.email;

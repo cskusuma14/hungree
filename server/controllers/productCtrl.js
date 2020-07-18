@@ -38,7 +38,7 @@ class Products {
           if (result) {
             newData = JSON.parse(result);
             newData.push(data);
-            //console.log(newData);
+            //console.log(newData, "a");
             redis.set("productsHungree", JSON.stringify(newData));
           }
         });
